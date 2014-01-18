@@ -1,14 +1,14 @@
 <?php
 
 // Direction du cache.php
-$cache_directory = 'vendor/cache.php';
+$cache_directory = 'cache/cache.php';
 
 include_once $cache_directory; // include > require car le cache n'existe pas forcement
 
 // map de dossiers qui seront parcourus pour inclusion
 $autoload_map = array(
-    'Coffee' => 'vendor/Coffee',
-    'Soda' => 'vendor/Soda',
+    'Coffee' => 'cache/Coffee',
+    'Soda' => 'cache/Soda',
 );
 
 spl_autoload_register(function ($className) {
