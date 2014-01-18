@@ -1,4 +1,4 @@
 <?php
 $cache_map = array (
-  'TestCase' => 'TestCase.php',
+  'App' => '../../app/app.php',
 );

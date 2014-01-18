@@ -1,15 +1,14 @@
 <?php
 
 // Direction du cache.php
-$cache_directory = 'cache/cache.php';
+$cache_directory = '../cache/cache.php';
 
 include_once $cache_directory; // include > require car le cache n'existe pas forcement
 
 // map de dossiers qui seront parcourus pour inclusion
 $autoload_map = array(
-    'Coffee' => 'cache/Coffee',
-    'Soda' => 'cache/Soda',
-);
+    'App' => '../app/app.php',
+    );
 
 spl_autoload_register(function ($className) {
     global $cache_directory, $autoload_map, $cache_map;
@@ -22,9 +21,11 @@ spl_autoload_register(function ($className) {
 
     // matte dans la map du dessus + ajout en cache, optimise sans foreach =D
     if (!empty($autoload_map)) {
-        $nameFolder = substr($className, 0, strrpos($className, '\\'));
-        if(array_key_exists($nameFolder, $autoload_map)) {
-            ScanDirectory($autoload_map[$nameFolder], $className);
+        // $nameFolder = substr($className, 0, strrpos($className, '\\'));
+        if(array_key_exists($className, $autoload_map)) {
+            // ScanDirectory($autoload_map[$nameFolder], $className);
+            addFileRoadToCache($className, $autoload_map[$className]);
+            include_once $autoload_map[$className];
             return;
         }
     }
@@ -42,7 +43,7 @@ function addFileRoadToCache($className, $fileRoad) {
     if (!$cache_map) {
         $cache_map = array();
     }
-    $cache_map[$className] = $fileRoad;
+    $cache_map[$className] = '../' . $fileRoad;
     file_put_contents($cache_directory, '<?php' . "\n" . '$cache_map = ' . var_export($cache_map, true) . ';');
 
     // Methode en string
@@ -56,18 +57,18 @@ function addFileRoadToCache($className, $fileRoad) {
 }
 
 // Fonction de parcourt de dossier
-function ScanDirectory($folderRoad, $className) {
-    $directory = opendir($folderRoad) or die('Erreur lors de l\'ouverture du dossier') . $folderRoad;
-    while ($entry = readdir($directory)) {
-        if (is_dir($folderRoad . '/' . $entry) && $entry != '.' && $entry != '..') {
-            ScanDirectory($folderRoad . '/' . $entry, $className);
-        } else if(substr($entry, -4) == '.php') {
-            loader($className);
-        }
-    }
-    closedir($directory);
-    return;
-}
+// function ScanDirectory($folderRoad, $className) {
+//     $directory = opendir($folderRoad) or die('Erreur lors de l\'ouverture du dossier') . $folderRoad;
+//     while ($entry = readdir($directory)) {
+//         if (is_dir($folderRoad . '/' . $entry) && $entry != '.' && $entry != '..') {
+//             ScanDirectory($folderRoad . '/' . $entry, $className);
+//         } else if(substr($entry, -4) == '.php') {
+//             loader($className);
+//         }
+//     }
+//     closedir($directory);
+//     return;
+// }
 
 // Fonction de chargement d'un fichier
 function loader($className) {
@@ -82,7 +83,7 @@ function loader($className) {
     }
     $fileRoad .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
     addFileRoadToCache($classNameSave, $fileRoad);
-    include_once $fileRoad;
+    include_once '../' . $fileRoad;
 }
 
 
