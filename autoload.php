@@ -57,7 +57,7 @@ function addFileRoadToCache($className, $fileRoad) {
 
 // Fonction de parcourt de dossier
 function ScanDirectory($folderRoad, $className) {
-    $directory = opendir($folderRoad) or die('Erreur lors de l\'ouverture du dossier )' . $folderRoad;
+    $directory = opendir($folderRoad) or die('Erreur lors de l\'ouverture du dossier') . $folderRoad;
     while ($entry = readdir($directory)) {
         if (is_dir($folderRoad . '/' . $entry) && $entry != '.' && $entry != '..') {
             ScanDirectory($folderRoad . '/' . $entry, $className);
