@@ -8,7 +8,7 @@ Ce projet est dans le cadre de la licence pro WEB, encadré par William Durand, 
     Vous ne pouvez pas l'utiliser, c'est LE futur framework PHP, successeur officiel de Symfony.
 
 @Author : Léo Poupet (Tralgar)<br/>
-@Potentiels commiteur : Léo Riera<br/>
+@Potentiel commiteur : Léo Riera (Dowdow)<br/>
 @Date création : 18 / 01 / 2013<br/>
 
 THX TO PONEY LAND AND TRIBE OF EWOKS !
