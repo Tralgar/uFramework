@@ -1,8 +1,6 @@
-<<<<<<< HEAD
 Usage:
-
-    php -S localhost:8080 -t web/
-=======
+    Vous ne pouvez pas, c'est LE futur framework PHP, successeur officiel de Symfony, qui va nous occuper pendant un sacré bout de temps !
+==========
 uFramework
 ==========
 
@@ -14,4 +12,3 @@ Ce projet est dans le cadre de la licence pro WEB, encadré par William Durand, 
 @Date création : 18 / 01 / 2013
 
 THX TO PONEY LAND !
->>>>>>> fcbb5d85845de2f1a85df507ae03f0ff1ea353d4
