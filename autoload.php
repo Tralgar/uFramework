@@ -1,17 +1,19 @@
 <?php
 
-// Direction du cache.php
+// Directions
 $cache_directory = '../cache/cache.php';
+$main_directory = '..';
 
 include_once $cache_directory; // include > require car le cache n'existe pas forcement
 
 // map de dossiers qui seront parcourus pour inclusion
 $autoload_map = array(
-    'App' => '../app/app.php',
+    // 'app' => '../app/app.php',
+    // 'App' => '../src/App.php',
     );
 
 spl_autoload_register(function ($className) {
-    global $cache_directory, $autoload_map, $cache_map;
+    global $autoload_map, $cache_map;
 
     // matte dans le cache map, optimise sans foreach =D
     if(!empty($cache_map) && array_key_exists($className, $cache_map)) {
@@ -21,9 +23,7 @@ spl_autoload_register(function ($className) {
 
     // matte dans la map du dessus + ajout en cache, optimise sans foreach =D
     if (!empty($autoload_map)) {
-        // $nameFolder = substr($className, 0, strrpos($className, '\\'));
         if(array_key_exists($className, $autoload_map)) {
-            // ScanDirectory($autoload_map[$nameFolder], $className);
             addFileRoadToCache($className, $autoload_map[$className]);
             include_once $autoload_map[$className];
             return;
@@ -37,41 +37,39 @@ spl_autoload_register(function ($className) {
 
 // Fonction d'ajout d'un fichier dans le cache
 function addFileRoadToCache($className, $fileRoad) {
-    global $cache_directory, $autoload_map, $cache_map;
+    global $cache_directory, $cache_map;
 
     // Methode avec var_export
     if (!$cache_map) {
         $cache_map = array();
     }
-    $cache_map[$className] = '../' . $fileRoad;
+    $cache_map[$className] = $fileRoad;
     file_put_contents($cache_directory, '<?php' . "\n" . '$cache_map = ' . var_export($cache_map, true) . ';');
-
-    // Methode en string
-    // $cache_content = file_get_contents($cache_directory);
-    // if(!$cache_content) {
-    // 	$cache_content = '<?php' . "\n" . '$cache_map = array();' . "\n";
-    // }
-    // $cache_content .= '$cache_map["' . $className . '"] = "' . $fileRoad . '";' . "\n";
-    // file_put_contents($cache_directory, $cache_content);
     return;
 }
 
 // Fonction de parcourt de dossier
-// function ScanDirectory($folderRoad, $className) {
-//     $directory = opendir($folderRoad) or die('Erreur lors de l\'ouverture du dossier') . $folderRoad;
-//     while ($entry = readdir($directory)) {
-//         if (is_dir($folderRoad . '/' . $entry) && $entry != '.' && $entry != '..') {
-//             ScanDirectory($folderRoad . '/' . $entry, $className);
-//         } else if(substr($entry, -4) == '.php') {
-//             loader($className);
-//         }
-//     }
-//     closedir($directory);
-//     return;
-// }
+function searchFile($directory, $file, $classNameSave) {
+    $open_directory = opendir($directory) or die('Erreur lors de l\'ouverture du dossier') . $directory;
+    while ($entry = readdir($open_directory)) {
+        if (is_dir($directory . DIRECTORY_SEPARATOR . $entry) && $entry != '.' && $entry != '..') {
+            searchFile($directory . DIRECTORY_SEPARATOR . $entry, $file, $classNameSave);
+        } else if($entry == $file) {
+            closedir($open_directory);
+            $path = $directory . DIRECTORY_SEPARATOR . $file;
+            addFileRoadToCache($classNameSave, $path);
+            include_once $path;
+            return;
+        }
+    }
+    closedir($open_directory);
+    return;
+}
 
 // Fonction de chargement d'un fichier
 function loader($className) {
+    global $main_directory;
+
     $classNameSave = $className;
     $className = ltrim($className, '\\');
     $fileRoad = '';
@@ -82,8 +80,10 @@ function loader($className) {
         $fileRoad = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
     }
     $fileRoad .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-    addFileRoadToCache($classNameSave, $fileRoad);
-    include_once '../' . $fileRoad;
+    if(strrpos($fileRoad, DIRECTORY_SEPARATOR)) {
+        $fileRoad = substr($fileRoad, strrpos($fileRoad, DIRECTORY_SEPARATOR) + 1);
+    }
+    searchFile($main_directory, $fileRoad, $classNameSave);
 }
 
 
