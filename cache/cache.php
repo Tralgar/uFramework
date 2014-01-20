@@ -5,4 +5,5 @@ $cache_map = array (
   'View\\TemplateEngineInterface' => '../src/View/TemplateEngineInterface.php',
   'Exception\\ExceptionHandler' => '../src/Exception/ExceptionHandler.php',
   'Exception\\HttpException' => '../src/Exception/HttpException.php',
+  'Routing\\Route' => '../src/Routing/Route.php',
 );

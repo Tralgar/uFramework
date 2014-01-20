@@ -8,8 +8,8 @@ include_once $cache_directory; // include > require car le cache n'existe pas fo
 
 // map de dossiers qui seront parcourus pour inclusion
 $autoload_map = array(
-    // 'app' => '../app/app.php',
-    // 'App' => '../src/App.php',
+    'app' => '../app/app.php',
+    'App' => '../src/App.php',
     );
 
 spl_autoload_register(function ($className) {

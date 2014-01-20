@@ -9,9 +9,8 @@ $app = new \App(new View\TemplateEngine(
     __DIR__ . '/templates/'
 ), $debug);
 
-/**
- * Index
- */
+
+// / racine mais il faudrait /uframework/web/
 $app->get('/', function () use ($app) {
     return $app->render('index.php');
 });

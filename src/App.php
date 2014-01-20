@@ -7,11 +7,11 @@ use View\TemplateEngineInterface;
 
 class App
 {
-    const GET    = 'GET';
+    const GET = 'GET';
 
-    const POST   = 'POST';
+    const POST = 'POST';
 
-    const PUT    = 'PUT';
+    const PUT = 'PUT';
 
     const DELETE = 'DELETE';
 
@@ -38,7 +38,7 @@ class App
     public function __construct(TemplateEngineInterface $templateEngine, $debug = false)
     {
         $this->templateEngine = $templateEngine;
-        $this->debug          = $debug;
+        $this->debug = $debug;
 
         $exceptionHandler = new ExceptionHandler($templateEngine, $this->debug);
         set_exception_handler(array($exceptionHandler, 'handle'));
@@ -46,8 +46,8 @@ class App
 
     /**
      * @param string $template
-     * @param array  $parameters
-     * @param int    $statusCode
+     * @param arrayx $parameters
+     * @param int $statusCode
      *
      * @return string
      */
@@ -59,7 +59,7 @@ class App
     }
 
     /**
-     * @param string   $pattern
+     * @param string $pattern
      * @param callable $callable
      *
      * @return App
@@ -76,7 +76,11 @@ class App
     public function run()
     {
         $method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : self::GET;
-        $uri    = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
+        $uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
+
+        // PROBLEME dans le match, on a le $pattern qui n'est pas égal à l'uri.
+        // L'uri est /uframework/web/
+        // Le pattern est /
 
         foreach ($this->routes as $route) {
             if ($route->match($method, $uri)) {
@@ -103,12 +107,13 @@ class App
     }
 
     /**
-     * @param string   $method
-     * @param string   $pattern
+     * @param string $method
+     * @param string $pattern
      * @param callable $callable
      */
     private function registerRoute($method, $pattern, $callable)
     {
-        // complete this part
+        $route = new Route($method, $pattern, $callable);
+        $this->routes[] = $route;
     }
 }

@@ -25,15 +25,15 @@ class Route
     private $arguments;
 
     /**
-     * @param string   $method
-     * @param string   $pattern
+     * @param string $method
+     * @param string $pattern
      * @param callable $callable
      */
     public function __construct($method, $pattern, $callable)
     {
-        $this->method    = $method;
-        $this->pattern   = $pattern;
-        $this->callable  = $callable;
+        $this->method = $method;
+        $this->pattern = $pattern;
+        $this->callable = $callable;
         $this->arguments = array();
     }
 
@@ -51,7 +51,6 @@ class Route
 
         if (preg_match($this->compilePattern(), $uri, $this->arguments)) {
             array_shift($this->arguments);
-
             return true;
         }
 
@@ -92,6 +91,8 @@ class Route
 
     private function compilePattern()
     {
+        // #^$# =>  indique que c'est un début et une fin de chaine, on aura donc que %s
+        // %s => ??
         return sprintf('#^%s$#', $this->pattern);
     }
 }
