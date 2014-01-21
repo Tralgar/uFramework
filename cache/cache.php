@@ -1,9 +1,10 @@
 <?php
 $cache_map = array (
-  'App' => '../src/App.php',
-  'View\\TemplateEngine' => '../src/View/TemplateEngine.php',
-  'View\\TemplateEngineInterface' => '../src/View/TemplateEngineInterface.php',
-  'Exception\\ExceptionHandler' => '../src/Exception/ExceptionHandler.php',
-  'Exception\\HttpException' => '../src/Exception/HttpException.php',
-  'Routing\\Route' => '../src/Routing/Route.php',
+  'TestCase' => '/Users/Leo/Documents/PHP/vm-Leo/projects/uframework/tests/TestCase.php',
+  'App' => '/Users/Leo/Documents/PHP/vm-Leo/projects/uframework/src/App.php',
+  'View\\TemplateEngineInterface' => '/Users/Leo/Documents/PHP/vm-Leo/projects/uframework/src/View/TemplateEngineInterface.php',
+  'Exception\\ExceptionHandler' => '/Users/Leo/Documents/PHP/vm-Leo/projects/uframework/src/Exception/ExceptionHandler.php',
+  'Routing\\Route' => '/Users/Leo/Documents/PHP/vm-Leo/projects/uframework/src/Routing/Route.php',
+  'View\\TemplateEngine' => '/Users/Leo/Documents/PHP/vm-Leo/projects/uframework/src/View/TemplateEngine.php',
+  'Exception\\HttpException' => '/Users/Leo/Documents/PHP/vm-Leo/projects/uframework/src/Exception/HttpException.php',
 );

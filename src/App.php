@@ -71,16 +71,49 @@ class App
         return $this;
     }
 
-    // Something is missing here...
+    /**
+     * @param string $pattern
+     * @param callable $callable
+     *
+     * @return App
+     */
+    public function post($pattern, $callable)
+    {
+        $this->registerRoute(self::POST, $pattern, $callable);
+
+        return $this;
+    }
+
+    /**
+     * @param string $pattern
+     * @param callable $callable
+     *
+     * @return App
+     */
+    public function put($pattern, $callable)
+    {
+        $this->registerRoute(self::PUT, $pattern, $callable);
+
+        return $this;
+    }
+
+    /**
+     * @param string $pattern
+     * @param callable $callable
+     *
+     * @return App
+     */
+    public function delete($pattern, $callable)
+    {
+        $this->registerRoute(self::DELETE, $pattern, $callable);
+
+        return $this;
+    }
 
     public function run()
     {
         $method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : self::GET;
         $uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
-
-        // PROBLEME dans le match, on a le $pattern qui n'est pas égal à l'uri.
-        // L'uri est /uframework/web/
-        // Le pattern est /
 
         foreach ($this->routes as $route) {
             if ($route->match($method, $uri)) {
@@ -102,7 +135,7 @@ class App
         } catch (HttpException $e) {
             throw $e;
         } catch (\Exception $e) {
-            throw new HttpException(500, null, $e);
+            throw new HttpException(500, NULL, $e);
         }
     }
 

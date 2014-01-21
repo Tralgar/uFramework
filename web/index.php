@@ -2,7 +2,7 @@
 
 $app = require __DIR__ . '/../app/app.php';
 
-echo "1";
+echo "###################################### SERVER ######################################<br/>";
 print_r($_SERVER);
 
 $app->run();

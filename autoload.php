@@ -1,25 +1,22 @@
 <?php
 
 // Directions
-$cache_directory = '../cache/cache.php';
-$main_directory = '..';
+$cache_directory = __DIR__ . DIRECTORY_SEPARATOR . 'cache/cache.php';
+$main_directory = __DIR__;
 
 include_once $cache_directory; // include > require car le cache n'existe pas forcement
 
 // map de dossiers qui seront parcourus pour inclusion
-$autoload_map = array(
-    'app' => '../app/app.php',
-    'App' => '../src/App.php',
-    );
+$autoload_map = array();
 
 spl_autoload_register(function ($className) {
     global $autoload_map, $cache_map;
 
     // matte dans le cache map, optimise sans foreach =D
-    if(!empty($cache_map) && array_key_exists($className, $cache_map)) {
+    /** if(!empty($cache_map) && array_key_exists($className, $cache_map)) {
     	include_once $cache_map[$className];
     	return;
-    }
+    }*/
 
     // matte dans la map du dessus + ajout en cache, optimise sans foreach =D
     if (!empty($autoload_map)) {
@@ -54,12 +51,13 @@ function searchFile($directory, $file, $classNameSave) {
     while ($entry = readdir($open_directory)) {
         if (is_dir($directory . DIRECTORY_SEPARATOR . $entry) && $entry != '.' && $entry != '..') {
             searchFile($directory . DIRECTORY_SEPARATOR . $entry, $file, $classNameSave);
-        } else if($entry == $file) {
+        } else if($entry === $file) {
             closedir($open_directory);
             $path = $directory . DIRECTORY_SEPARATOR . $file;
+            // echo $path; echo is GOOD !
             addFileRoadToCache($classNameSave, $path);
             include_once $path;
-            return;
+            return $path;
         }
     }
     closedir($open_directory);
@@ -83,7 +81,6 @@ function loader($className) {
     if(strrpos($fileRoad, DIRECTORY_SEPARATOR)) {
         $fileRoad = substr($fileRoad, strrpos($fileRoad, DIRECTORY_SEPARATOR) + 1);
     }
-    searchFile($main_directory, $fileRoad, $classNameSave);
+    $path = searchFile($main_directory, $fileRoad, $classNameSave);
+    return;
 }
-
-

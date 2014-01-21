@@ -9,11 +9,13 @@ $app = new \App(new View\TemplateEngine(
     __DIR__ . '/templates/'
 ), $debug);
 
-
-// / racine mais il faudrait /uframework/web/
 $app->get('/', function () use ($app) {
     return $app->render('index.php');
 });
+
+//$app->get('/uframework/web/', function () use ($app) {
+//    return $app->render('leo.php');
+//});
 
 // ...
 

@@ -92,7 +92,7 @@ class Route
     private function compilePattern()
     {
         // #^$# =>  indique que c'est un début et une fin de chaine, on aura donc que %s
-        // %s => ??
+        // %s => remplacement par le $this->pattern
         return sprintf('#^%s$#', $this->pattern);
     }
 }
