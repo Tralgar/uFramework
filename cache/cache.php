@@ -11,4 +11,7 @@ $cache_map = array (
   'Model\\FinderInterface' => '/var/www/uframework/src/Model/FinderInterface.php',
   'Model\\Tweet' => '/var/www/uframework/src/Model/Tweet.php',
   'Model\\HttpException' => '/var/www/uframework/src/Exception/HttpException.php',
+  'Assert\\Assertion' => '/var/www/uframework/vendor/beberlei/assert/lib/Assert/Assertion.php',
+  'Assert\\InvalidArgumentException' => '/var/www/uframework/vendor/beberlei/assert/lib/Assert/InvalidArgumentException.php',
+  'Assert\\AssertionFailedException' => '/var/www/uframework/vendor/beberlei/assert/lib/Assert/AssertionFailedException.php',
 );
