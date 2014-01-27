@@ -58,6 +58,13 @@ class App
         return $this->templateEngine->render($template, $parameters);
     }
 
+    /** URIs REST Compliant validé par Le yoda du PHP
+     *  GET /tweets
+     *  GET /tweets/id
+     *  POST /tweets
+     *  DELETE /tweets/id
+     */
+
     /**
      * @param string $pattern
      * @param callable $callable
