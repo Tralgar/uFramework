@@ -51,10 +51,10 @@ function searchFile($directory, $file, $classNameSave) {
     while ($entry = readdir($open_directory)) {
         if (is_dir($directory . DIRECTORY_SEPARATOR . $entry) && $entry != '.' && $entry != '..') {
             searchFile($directory . DIRECTORY_SEPARATOR . $entry, $file, $classNameSave);
-        } else if($entry === $file) {
+        }
+        elseif($entry === $file) {
             closedir($open_directory);
             $path = $directory . DIRECTORY_SEPARATOR . $file;
-            // echo $path; echo is GOOD !
             addFileRoadToCache($classNameSave, $path);
             include_once $path;
             return $path;

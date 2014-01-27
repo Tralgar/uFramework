@@ -2,7 +2,6 @@
 
 require __DIR__ . '/../autoload.php';
 
-// Config
 $debug = true;
 
 $app = new \App(new View\TemplateEngine(
@@ -13,10 +12,16 @@ $app->get('/', function () use ($app) {
     return $app->render('index.php');
 });
 
-//$app->get('/uframework/web/', function () use ($app) {
-//    return $app->render('leo.php');
-//});
+$app->get('/tweet', function () use ($app) {
+    $inMemory = new \Model\InMemoryFinder();
+    $tweets = $inMemory->findAll();
+    return $app->render('tweets.php', array('tweets' => $tweets));
+});
 
-// ...
+$app->get('/tweet/(\d+)', function ($id) use ($app) {
+    $inMemory = new \Model\InMemoryFinder();
+    $tweet = $inMemory->findOneById($id);
+    return $app->render('tweet.php', array('tweet' => $tweet));
+});
 
 return $app;
