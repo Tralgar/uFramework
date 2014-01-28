@@ -7,6 +7,7 @@ use DateTime;
 // use Assert\AssertionFailedException; to display exception as i want :)
 
 class Tweet {
+    public static $_nbTweets = 0;
 
     private $id;
 
@@ -26,6 +27,7 @@ class Tweet {
         $this->content = $content;
         // $pattern_date = '#^2[0-9]{3}[-]((0[1-9])|(1[0-2]))[-]((0[1-9])|(1|2[0-9])|(3[0-1]))[ ](((0|1)[0-9])|(2[0-3]))[:]((0[0-9])|([1-5][0-9]))[:]((0[0-9])|([1-5][0-9]))$#';
         $this->date = $date;
+        self::$_nbTweets = $id++;
     }
 
     public function getId() {
