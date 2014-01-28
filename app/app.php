@@ -26,7 +26,7 @@ $app->get('/tweet/(\d+)', function ($id) use ($app) { // on peut request mais il
     //$inMemory = new \Model\InMemoryFinder();
     //$tweet = $inMemory->findOneById($id);
     $jsonTweets = new \Model\JsonFinder();
-    $jsonTweets->saveTweet(new \Model\Tweet(3, 6, "Tweet du 8eme user", new DateTime("now"))); // strtotime a voir
+    // $jsonTweets->saveTweet(new \Model\Tweet(14, 2, "Tweet de test de creation", new DateTime())); // strtotime a voir : VU, strtotime("last Monday") mais renvoie timestamp, faut formater
     $tweet = $jsonTweets->findOneById($id);
     return $app->render('tweet.php', array('tweet' => $tweet));
 });

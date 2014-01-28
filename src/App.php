@@ -4,17 +4,10 @@ use Exception\ExceptionHandler;
 use Exception\HttpException;
 use Routing\Route;
 use View\TemplateEngineInterface;
+use Http\Request;
 
 class App
 {
-    const GET = 'GET';
-
-    const POST = 'POST';
-
-    const PUT = 'PUT';
-
-    const DELETE = 'DELETE';
-
     /**
      * @var array
      */
@@ -73,7 +66,7 @@ class App
      */
     public function get($pattern, $callable)
     {
-        $this->registerRoute(self::GET, $pattern, $callable);
+        $this->registerRoute(Request::GET, $pattern, $callable);
 
         return $this;
     }
@@ -86,7 +79,7 @@ class App
      */
     public function post($pattern, $callable)
     {
-        $this->registerRoute(self::POST, $pattern, $callable);
+        $this->registerRoute(Request::POST, $pattern, $callable);
 
         return $this;
     }
@@ -99,7 +92,7 @@ class App
      */
     public function put($pattern, $callable)
     {
-        $this->registerRoute(self::PUT, $pattern, $callable);
+        $this->registerRoute(Request::PUT, $pattern, $callable);
 
         return $this;
     }
@@ -112,15 +105,19 @@ class App
      */
     public function delete($pattern, $callable)
     {
-        $this->registerRoute(self::DELETE, $pattern, $callable);
+        $this->registerRoute(Request::DELETE, $pattern, $callable);
 
         return $this;
     }
 
-    public function run()
+    public function run(Request $request = null)
     {
-        $method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : self::GET;
-        $uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
+        if($request === null) {
+            $request = Request::createFromGlobals();
+        }
+
+        $method = $request->getMethod();
+        $uri = $request->getUri();
 
         foreach ($this->routes as $route) {
             if ($route->match($method, $uri)) {

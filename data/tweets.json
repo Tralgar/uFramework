@@ -29,6 +29,16 @@
                 "timezone_type": 3,
                 "timezone": "Europe/Paris"
             }
+        },
+        {
+            "id": 14,
+            "user_id": 2,
+            "content": "Tweet de test de creation",
+            "date": {
+                "date": "2014-01-28 20:27:36",
+                "timezone_type": 3,
+                "timezone": "Europe/Paris"
+            }
         }
     ]
 }

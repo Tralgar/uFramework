@@ -2,6 +2,8 @@
 
 namespace Model;
 
+use DateTime;
+
 class JsonFinder implements FinderInterface {
 
     private $file;
@@ -15,7 +17,7 @@ class JsonFinder implements FinderInterface {
         $jsonFile = file_get_contents($this->file);
         $tweets = json_decode($jsonFile, true);
         foreach($tweets["tweets"] as $tweet) {
-            $tweet = new Tweet($tweet["id"], $tweet["user_id"], $tweet["content"], new \DateTime($tweet["date"]["date"])); // car datetime est un tableau de 3 indices, avec le premier qui est date en string
+            $tweet = new Tweet($tweet["id"], $tweet["user_id"], $tweet["content"], new DateTime($tweet["date"]["date"])); // car datetime est un tableau de 3 indices, avec le premier qui est date en string
             array_push($tweetsArray, $tweet);
         }
         return $tweetsArray;
@@ -26,7 +28,7 @@ class JsonFinder implements FinderInterface {
         $tweets = json_decode($jsonFile, true);
         foreach($tweets["tweets"] as $tweet) {
             if($tweet["id"] == $id) {
-                $tweetFound = new Tweet($tweet["id"], $tweet["user_id"], $tweet["content"], new \DateTime($tweet["date"]["date"]));
+                $tweetFound = new Tweet($tweet["id"], $tweet["user_id"], $tweet["content"], new DateTime($tweet["date"]["date"]));
                 return $tweetFound;
             }
         }
@@ -35,20 +37,20 @@ class JsonFinder implements FinderInterface {
     public function saveTweet($tweet) {
         $jsonFile = file_get_contents($this->file);
         $tweets = json_decode($jsonFile, true);
-        if(!$tweets["tweets"][$tweet->getId()])
-        {
-            $tweetArray = array(
-                "id" => $tweet->getId(),
-                "user_id" => $tweet->getUserId(),
-                "content" => $tweet->getContent(),
-                "date" => $tweet->getDate(),
-            );
-            array_push($tweets["tweets"], $tweetArray);
-            file_put_contents($this->file, json_encode($tweets));
+        foreach($tweets["tweets"] as $oneTweet) { // car l'indice du tableau n'est pas forcemment égale à l'id du tweet
+            if($oneTweet["id"] == $tweet->getId()) {
+                echo "L\'identifiant du tweet existe déjà !...";
+                return;
+            }
         }
-
-        echo "id raté";
-        exit(); // erreur d'id non identifiant
+        $tweetArray = array(
+            "id" => $tweet->getId(),
+            "user_id" => $tweet->getUserId(),
+            "content" => $tweet->getContent(),
+            "date" => $tweet->getDate(),
+        );
+        array_push($tweets["tweets"], $tweetArray);
+        file_put_contents($this->file, json_encode($tweets));
     }
 
     /*
