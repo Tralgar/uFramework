@@ -16,6 +16,10 @@ class Request
 
     public function getMethod() {
         $method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : self::GET;
+
+        if (self::POST === $method) {
+            return $this->getParameter('_method', $method);
+        }
         return $method;
     }
 

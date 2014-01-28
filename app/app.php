@@ -37,7 +37,7 @@ $app->get('/tweet/(\d+)', function (Request $request, $id) use ($app) { // on pe
 
 $app->post('/tweet', function (Request $request) use ($app) {
     $jsonTweets = new JsonFinder();
-    $jsonTweets->saveTweet(new Tweet(Tweet::$_nbTweets, intval($request->getParameter("user_id")), $request->getParameter("content"), new DateTime()));
+    $jsonTweets->saveTweet(new Tweet(Tweet::getLastTweetId(), intval($request->getParameter("user_id")), $request->getParameter("content"), new DateTime()));
     $tweets = $jsonTweets->findAll();
     return $app->render('tweets.php', array('tweets' => $tweets));
 });

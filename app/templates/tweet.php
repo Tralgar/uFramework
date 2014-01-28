@@ -1,8 +1,7 @@
 <?php
     $tweet = $parameters['tweet'];
+    include_once "header.php";
 ?>
-<html>
-    <body>
         <div class="titleTweets">
             Affichage du tweet :
         </div>
@@ -12,5 +11,7 @@
                 echo $tweet;
             ?>
         </div>
-    </body>
-</html>
+
+<?php
+    include_once "footer.php";
+?>

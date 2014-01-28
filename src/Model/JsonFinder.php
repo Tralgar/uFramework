@@ -6,15 +6,14 @@ use DateTime;
 
 class JsonFinder implements FinderInterface {
 
-    private $file;
+    public static $file = '../data/tweets.json'; // static car utilisé dans la creation de tweet pr last ID
 
     public function __construct() {
-        $this->file = '../data/tweets.json';
     }
 
     public function findAll() {
         $tweetsArray = array();
-        $jsonFile = file_get_contents($this->file);
+        $jsonFile = file_get_contents(self::$file);
         $tweets = json_decode($jsonFile, true);
         foreach($tweets["tweets"] as $tweet) {
             $tweet = new Tweet($tweet["id"], $tweet["user_id"], $tweet["content"], new DateTime($tweet["date"]["date"])); // car datetime est un tableau de 3 indices, avec le premier qui est date en string
@@ -24,7 +23,7 @@ class JsonFinder implements FinderInterface {
     }
 
     public function findOneById($id) {
-        $jsonFile = file_get_contents($this->file);
+        $jsonFile = file_get_contents(self::$file);
         $tweets = json_decode($jsonFile, true);
         foreach($tweets["tweets"] as $tweet) {
             if($tweet["id"] == $id) {
@@ -35,7 +34,7 @@ class JsonFinder implements FinderInterface {
     }
 
     public function saveTweet($tweet) {
-        $jsonFile = file_get_contents($this->file);
+        $jsonFile = file_get_contents(self::$file);
         $tweets = json_decode($jsonFile, true);
         foreach($tweets["tweets"] as $oneTweet) { // car l'indice du tableau n'est pas forcemment égale à l'id du tweet
             if($oneTweet["id"] == $tweet->getId()) {
@@ -50,7 +49,7 @@ class JsonFinder implements FinderInterface {
             "date" => $tweet->getDate(),
         );
         array_push($tweets["tweets"], $tweetArray);
-        file_put_contents($this->file, json_encode($tweets));
+        file_put_contents(self::$file, json_encode($tweets));
     }
 
     /*
