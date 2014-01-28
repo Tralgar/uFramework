@@ -1,5 +1,5 @@
 {
     "require": {
-        "beberlei/assert": "*"
+        "beberlei/assert": "~2.0"
     }
 }
