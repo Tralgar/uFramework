@@ -12,6 +12,8 @@ class Request
 
     const DELETE = 'DELETE';
 
+    private $parameters = array();
+
     public function getMethod() {
         $method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : self::GET;
         return $method;
@@ -27,6 +29,17 @@ class Request
     }
 
     public static function createFromGlobals() {
-        return new self();
+        return new self($_GET, $_POST);
+    }
+
+    public function __construct(array $query = array(), array $request = array()) { //$query -> $_GET, $request -> $_POST
+        $this->parameters = array_merge($query, $request); // va merger les deux tableaux, rassemble les élems des deux tab
+    }
+
+    public function getParameter($name, $default = null) {
+        if(array_key_exists($name, $this->parameters)) {
+            return $this->parameters[$name];
+        }
+        return $default;
     }
 }

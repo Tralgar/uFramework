@@ -1,5 +1,7 @@
 <?php
 
+
+use Http\Request;
 // Tous les controleurs
 
 require __DIR__ . '/../autoload.php';
@@ -10,11 +12,11 @@ $app = new \App(new View\TemplateEngine(
     __DIR__ . '/templates/'
 ), $debug);
 
-$app->get('/', function () use ($app) {
+$app->get('/', function (Request $request) use ($app) {// request is not shared. It is always different !
     return $app->render('index.php');
 });
 
-$app->get('/tweet', function () use ($app) {
+$app->get('/tweet', function (Request $request) use ($app) {
     //$inMemory = new \Model\InMemoryFinder();
     //$tweets = $inMemory->findAll();
     $jsonTweets = new \Model\JsonFinder();
@@ -22,7 +24,7 @@ $app->get('/tweet', function () use ($app) {
     return $app->render('tweets.php', array('tweets' => $tweets));
 });
 
-$app->get('/tweet/(\d+)', function ($id) use ($app) { // on peut request mais il faut le mettre en premier
+$app->get('/tweet/(\d+)', function (Request $request, $id) use ($app) { // on peut request mais il faut le mettre en premier
     //$inMemory = new \Model\InMemoryFinder();
     //$tweet = $inMemory->findOneById($id);
     $jsonTweets = new \Model\JsonFinder();
