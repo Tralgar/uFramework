@@ -9,6 +9,12 @@
         <div>
             <?php
             foreach($tweets as $tweet) {
+                ?>
+                <form style="float:left;" action="/tweet" method="DELETE">
+                    <input type="hidden" name="id" />
+                    <input type="submit" value="Supprimer" />
+                </form>
+                <?php
                 echo $tweet;
             }
             ?>

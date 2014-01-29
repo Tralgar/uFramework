@@ -147,6 +147,14 @@ class App
         }
     }
 
+    public function redirect($to, $statusCode = 302)
+    {
+        http_response_code($statusCode);
+        header(sprintf('Location: %s', $to));
+
+        die;
+    }
+
     /**
      * @param string $method
      * @param string $pattern

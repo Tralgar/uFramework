@@ -2,7 +2,9 @@
 
 namespace Model;
 
+use Assert\LazyAssertionException;
 use DateTime;
+use Exception\HttpException;
 
 class JsonFinder implements FinderInterface {
 
@@ -13,8 +15,7 @@ class JsonFinder implements FinderInterface {
 
     public function findAll() {
         $tweetsArray = array();
-        $jsonFile = file_get_contents(self::$file);
-        $tweets = json_decode($jsonFile, true);
+        $tweets = $this->getJsonTweets();
         foreach($tweets["tweets"] as $tweet) {
             $tweet = new Tweet($tweet["id"], $tweet["user_id"], $tweet["content"], new DateTime($tweet["date"]["date"])); // car datetime est un tableau de 3 indices, avec le premier qui est date en string
             array_push($tweetsArray, $tweet);
@@ -23,8 +24,7 @@ class JsonFinder implements FinderInterface {
     }
 
     public function findOneById($id) {
-        $jsonFile = file_get_contents(self::$file);
-        $tweets = json_decode($jsonFile, true);
+        $tweets = $this->getJsonTweets();
         foreach($tweets["tweets"] as $tweet) {
             if($tweet["id"] == $id) {
                 $tweetFound = new Tweet($tweet["id"], $tweet["user_id"], $tweet["content"], new DateTime($tweet["date"]["date"]));
@@ -34,8 +34,7 @@ class JsonFinder implements FinderInterface {
     }
 
     public function saveTweet($tweet) {
-        $jsonFile = file_get_contents(self::$file);
-        $tweets = json_decode($jsonFile, true);
+        $tweets = $this->getJsonTweets();
         foreach($tweets["tweets"] as $oneTweet) { // car l'indice du tableau n'est pas forcemment égale à l'id du tweet
             if($oneTweet["id"] == $tweet->getId()) {
                 echo "L\'identifiant du tweet existe déjà !...";
@@ -49,7 +48,34 @@ class JsonFinder implements FinderInterface {
             "date" => $tweet->getDate(),
         );
         array_push($tweets["tweets"], $tweetArray);
-        file_put_contents(self::$file, json_encode($tweets));
+        $this->setJsonTweets($tweets);
+    }
+
+    public function deleteTweet($id) {
+        if($tweet = $this->findOneById($id)) {
+            $tweets = $this->findAll();
+            unset($tweets[array_search($tweet, $tweets)]);
+            $this->setJsonTweets($tweets);
+            return;
+        }
+
+        throw new HttpException(404, "Le tweet avec l'id demandé n'existe pas !");
+    }
+
+    private function getJsonTweets() {
+        $tweets = json_decode(file_get_contents(self::$file), true);
+        if($tweets === false) {
+            echo "Erreur lors de la lecture du fichier " . self::$file;
+            exit();
+        }
+        return $tweets;
+    }
+
+    private function setJsonTweets($tweets) {
+        if(file_put_contents(self::$file, json_encode($tweets)) === false) {
+            echo "Erreur lors de l'écriture dans le fichier " . self::$file;
+            exit();
+        }
     }
 
     /*

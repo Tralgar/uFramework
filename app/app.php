@@ -1,6 +1,5 @@
 <?php
 
-
 use Http\Request;
 use Model\Tweet;
 use Model\JsonFinder;
@@ -14,7 +13,7 @@ $app = new \App(new View\TemplateEngine(
     __DIR__ . '/templates/'
 ), $debug);
 
-$app->get('/', function (Request $request) use ($app) {// request is not shared. It is always different !
+$app->get('/', function (Request $request) use ($app) { // request is not shared. It is always different !
     return $app->render('index.php');
 });
 
@@ -38,8 +37,14 @@ $app->get('/tweet/(\d+)', function (Request $request, $id) use ($app) { // on pe
 $app->post('/tweet', function (Request $request) use ($app) {
     $jsonTweets = new JsonFinder();
     $jsonTweets->saveTweet(new Tweet(Tweet::getLastTweetId(), intval($request->getParameter("user_id")), $request->getParameter("content"), new DateTime()));
-    $tweets = $jsonTweets->findAll();
-    return $app->render('tweets.php', array('tweets' => $tweets));
+    $jsonTweets->findAll();
+    $app->redirect('/tweet', 201);
+});
+
+$app->delete('/tweet/(\d+)', function (Request $request, $id) use ($app) {
+    $jsonTweets = new JsonFinder();
+    $jsonTweets->deleteTweet($id);
+    $app->redirect('/tweet', 204);
 });
 
 return $app;
