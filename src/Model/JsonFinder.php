@@ -49,12 +49,13 @@ class JsonFinder implements FinderInterface {
         );
         array_push($tweets["tweets"], $tweetArray);
         $this->setJsonTweets($tweets);
+        return;
     }
 
     public function deleteTweet($id) {
         if($tweet = $this->findOneById($id)) {
-            $tweets = $this->findAll();
-            unset($tweets[array_search($tweet, $tweets)]);
+            $tweets = $this->getJsonTweets();
+            unset($tweets["tweets"][array_search($tweet, $tweets)]); // array search n'est pas bon, je cherche l'indice mais je veux l'id
             $this->setJsonTweets($tweets);
             return;
         }
@@ -74,8 +75,9 @@ class JsonFinder implements FinderInterface {
     private function setJsonTweets($tweets) {
         if(file_put_contents(self::$file, json_encode($tweets)) === false) {
             echo "Erreur lors de l'écriture dans le fichier " . self::$file;
-            exit();
+            exit;
         }
+        return;
     }
 
     /*

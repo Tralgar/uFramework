@@ -7,9 +7,13 @@
         </div>
         <br/><br/>
         <div>
-            <?php
-                echo $tweet;
-            ?>
+            <form style="float:left;" action="/tweet/<?php echo $tweet->getId() ?>" method="DELETE">
+                <input type="hidden" name="id" />
+                <input type="submit" value="Supprimer" />
+            </form>
+        <?php
+            echo $tweet;
+        ?>
         </div>
 
 <?php

@@ -3,15 +3,15 @@
 use Http\Request;
 use Model\Tweet;
 use Model\JsonFinder;
+use View\TemplateEngine;
+
 // Tous les controleurs
 
 require __DIR__ . '/../autoload.php';
 
 $debug = true;
 
-$app = new \App(new View\TemplateEngine(
-    __DIR__ . '/templates/'
-), $debug);
+$app = new App(new TemplateEngine(__DIR__ . '/templates/'), $debug);
 
 $app->get('/', function (Request $request) use ($app) { // request is not shared. It is always different !
     return $app->render('index.php');
@@ -37,7 +37,6 @@ $app->get('/tweet/(\d+)', function (Request $request, $id) use ($app) { // on pe
 $app->post('/tweet', function (Request $request) use ($app) {
     $jsonTweets = new JsonFinder();
     $jsonTweets->saveTweet(new Tweet(Tweet::getLastTweetId(), intval($request->getParameter("user_id")), $request->getParameter("content"), new DateTime()));
-    $jsonTweets->findAll();
     $app->redirect('/tweet', 201);
 });
 

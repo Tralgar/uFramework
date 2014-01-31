@@ -7,7 +7,7 @@
     Id utilisateur :
     <input type="number" value="" name="user_id" /><br/>
     Message :
-    <input type="text" value="" name="content" />
+    <input type="text" value="" name="content" size="140" />
     <input type="submit" value="Et je valide !" />
 </form>
 
