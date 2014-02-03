@@ -37,13 +37,13 @@ $app->get('/tweet/(\d+)', function (Request $request, $id) use ($app) { // on pe
 $app->post('/tweet', function (Request $request) use ($app) {
     $jsonTweets = new JsonFinder();
     $jsonTweets->saveTweet(new Tweet(Tweet::getLastTweetId(), intval($request->getParameter("user_id")), $request->getParameter("content"), new DateTime()));
-    $app->redirect('/tweet', 201);
+    $app->redirect('/tweet');
 });
 
 $app->delete('/tweet/(\d+)', function (Request $request, $id) use ($app) {
     $jsonTweets = new JsonFinder();
     $jsonTweets->deleteTweet($id);
-    $app->redirect('/tweet', 204);
+    $app->redirect('/tweet');
 });
 
 return $app;

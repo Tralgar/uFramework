@@ -36,6 +36,7 @@ class JsonFinder implements FinderInterface {
     public function saveTweet($tweet) {
         $tweets = $this->getJsonTweets();
         foreach($tweets["tweets"] as $oneTweet) { // car l'indice du tableau n'est pas forcemment égale à l'id du tweet
+            echo "id : " . $oneTweet["id"] . " " . $tweet->getId();
             if($oneTweet["id"] == $tweet->getId()) {
                 echo "L\'identifiant du tweet existe déjà !...";
                 return;
@@ -55,7 +56,11 @@ class JsonFinder implements FinderInterface {
     public function deleteTweet($id) {
         if($tweet = $this->findOneById($id)) {
             $tweets = $this->getJsonTweets();
-            unset($tweets["tweets"][array_search($tweet, $tweets)]); // array search n'est pas bon, je cherche l'indice mais je veux l'id
+            foreach($tweets["tweets"] as $key => $tweet) {
+                if ($tweet['id'] == $id) {
+                    unset($tweets["tweets"][$key]);
+                }
+            }
             $this->setJsonTweets($tweets);
             return;
         }
