@@ -2,6 +2,8 @@
 
 namespace Http;
 
+use Negotiation\FormatNegotiator;
+
 class Request
 {
     const GET = 'GET';
@@ -32,7 +34,20 @@ class Request
         return $uri;
     }
 
-    public static function createFromGlobals() {
+    public static function createFromGlobals() { // do not change the order, i dont know why -> ask
+        if (isset($_SERVER['HTTP_CONTENT_TYPE'])) {
+            if($_SERVER['HTTP_CONTENT_TYPE'] === 'application/json') {
+                $data = file_get_contents('php://input');
+                return new self($_GET, json_decode($data, true));
+            }
+        }
+        if (isset($_SERVER['CONTENT_TYPE'])) {
+            if($_SERVER['CONTENT_TYPE'] === 'application/json') {
+                $data = file_get_contents('php://input');
+                return new self($_GET, json_decode($data, true));
+            }
+        }
+
         return new self($_GET, $_POST);
     }
 
@@ -45,5 +60,13 @@ class Request
             return $this->parameters[$name];
         }
         return $default;
+    }
+
+    public function guessBestFormat()
+    {
+        $negotiator = new FormatNegotiator();
+        $acceptHeader = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : 'application/json';
+        $priorities = array('html', 'application/json', '*/*');
+        return $negotiator->getBestFormat($acceptHeader, $priorities);
     }
 }

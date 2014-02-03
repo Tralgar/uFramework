@@ -52,6 +52,6 @@ class Tweet {
     public static function getLastTweetId() {
         $jsonFile = file_get_contents(JsonFinder::$file);
         $tweets = json_decode($jsonFile, true);
-        return $tweets["tweets"][count($tweets["tweets"])]["id"] + 1;
+        return $tweets['tweets'][count($tweets['tweets'])]['id'] + 1;
     }
 }

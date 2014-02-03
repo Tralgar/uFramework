@@ -7,7 +7,7 @@ use View\TemplateEngine;
 
 // Tous les controleurs
 
-require __DIR__ . '/../autoload.php';
+require '../vendor/autoload.php';
 
 $debug = true;
 
@@ -36,7 +36,7 @@ $app->get('/tweet/(\d+)', function (Request $request, $id) use ($app) { // on pe
 
 $app->post('/tweet', function (Request $request) use ($app) {
     $jsonTweets = new JsonFinder();
-    $jsonTweets->saveTweet(new Tweet(Tweet::getLastTweetId(), intval($request->getParameter("user_id")), $request->getParameter("content"), new DateTime()));
+    $jsonTweets->saveTweet(new Tweet(Tweet::getLastTweetId(), intval($request->getParameter('user_id')), $request->getParameter('content'), new DateTime()));
     $app->redirect('/tweet');
 });
 

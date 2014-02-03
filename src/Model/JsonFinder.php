@@ -16,8 +16,8 @@ class JsonFinder implements FinderInterface {
     public function findAll() {
         $tweetsArray = array();
         $tweets = $this->getJsonTweets();
-        foreach($tweets["tweets"] as $tweet) {
-            $tweet = new Tweet($tweet["id"], $tweet["user_id"], $tweet["content"], new DateTime($tweet["date"]["date"])); // car datetime est un tableau de 3 indices, avec le premier qui est date en string
+        foreach($tweets['tweets'] as $tweet) {
+            $tweet = new Tweet($tweet['id'], $tweet['user_id'], $tweet['content'], new DateTime($tweet['date']['date'])); // car datetime est un tableau de 3 indices, avec le premier qui est date en string
             array_push($tweetsArray, $tweet);
         }
         return $tweetsArray;
@@ -25,9 +25,9 @@ class JsonFinder implements FinderInterface {
 
     public function findOneById($id) {
         $tweets = $this->getJsonTweets();
-        foreach($tweets["tweets"] as $tweet) {
-            if($tweet["id"] == $id) {
-                $tweetFound = new Tweet($tweet["id"], $tweet["user_id"], $tweet["content"], new DateTime($tweet["date"]["date"]));
+        foreach($tweets['tweets'] as $tweet) {
+            if($tweet['id'] == $id) {
+                $tweetFound = new Tweet($tweet['id'], $tweet['user_id'], $tweet['content'], new DateTime($tweet['date']['date']));
                 return $tweetFound;
             }
         }
@@ -35,20 +35,19 @@ class JsonFinder implements FinderInterface {
 
     public function saveTweet($tweet) {
         $tweets = $this->getJsonTweets();
-        foreach($tweets["tweets"] as $oneTweet) { // car l'indice du tableau n'est pas forcemment égale à l'id du tweet
-            echo "id : " . $oneTweet["id"] . " " . $tweet->getId();
-            if($oneTweet["id"] == $tweet->getId()) {
+        foreach($tweets['tweets'] as $oneTweet) { // car l'indice du tableau n'est pas forcemment égale à l'id du tweet
+            if($oneTweet['id'] == $tweet->getId()) {
                 echo "L\'identifiant du tweet existe déjà !...";
                 return;
             }
         }
         $tweetArray = array(
-            "id" => $tweet->getId(),
-            "user_id" => $tweet->getUserId(),
-            "content" => $tweet->getContent(),
-            "date" => $tweet->getDate(),
+            'id' => $tweet->getId(),
+            'user_id' => $tweet->getUserId(),
+            'content' => $tweet->getContent(),
+            'date' => $tweet->getDate(),
         );
-        array_push($tweets["tweets"], $tweetArray);
+        array_push($tweets['tweets'], $tweetArray);
         $this->setJsonTweets($tweets);
         return;
     }
@@ -56,9 +55,9 @@ class JsonFinder implements FinderInterface {
     public function deleteTweet($id) {
         if($tweet = $this->findOneById($id)) {
             $tweets = $this->getJsonTweets();
-            foreach($tweets["tweets"] as $key => $tweet) {
+            foreach($tweets['tweets'] as $key => $tweet) {
                 if ($tweet['id'] == $id) {
-                    unset($tweets["tweets"][$key]);
+                    unset($tweets['tweets'][$key]);
                 }
             }
             $this->setJsonTweets($tweets);
