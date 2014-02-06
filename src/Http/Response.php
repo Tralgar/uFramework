@@ -2,8 +2,7 @@
 
 namespace Http;
 
-class Response
-{
+class Response {
     private $content;
 
     private $statusCode;

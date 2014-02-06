@@ -1,7 +1,8 @@
 {
     "require": {
         "beberlei/assert": "~2.0",
-        "willdurand/negotiation": "~1.3"
+        "willdurand/negotiation": "~1.3",
+        "symfony/serializer" : "~2.4"
     },
     "autoload": {
         "psr-0": { "": "src/" }

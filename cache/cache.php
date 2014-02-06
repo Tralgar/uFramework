@@ -14,6 +14,6 @@ $cache_map = array (
   'Assert\\Assertion' => '/var/www/uframework/vendor/beberlei/assert/lib/Assert/Assertion.php',
   'Assert\\InvalidArgumentException' => '/var/www/uframework/vendor/beberlei/assert/lib/Assert/InvalidArgumentException.php',
   'Assert\\AssertionFailedException' => '/var/www/uframework/vendor/beberlei/assert/lib/Assert/AssertionFailedException.php',
-  'Model\\JsonFinder' => '/var/www/uframework/src/Model/JsonFinder.php',
+  'Model\\JsonDAO' => '/var/www/uframework/src/Model/JsonDAO.php',
   'Http\\Request' => '/var/www/uframework/src/Http/Request.php',
 );

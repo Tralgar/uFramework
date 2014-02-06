@@ -2,16 +2,16 @@
 
 namespace Model;
 
-use Assert\LazyAssertionException;
+// REMPLACE PAR JSONDAO !!!!!!!!
+
 use DateTime;
 use Exception\HttpException;
 
-class JsonFinder implements FinderInterface {
+class JsonDAO implements FinderInterface {
 
     public static $file = '../data/tweets.json'; // static car utilisé dans la creation de tweet pr last ID
 
-    public function __construct() {
-    }
+    public function __construct() {}
 
     public function findAll() {
         $tweetsArray = array();
@@ -82,6 +82,18 @@ class JsonFinder implements FinderInterface {
             exit;
         }
         return;
+    }
+
+
+    // DECHARGER LA CLASSE TWEET DE SAVOIR LE LAST ID
+    /*
+     * Function that return the id of the last tweet + 1 to create a tweet with and auto ID unique
+     */
+    public function getLastTweetId() {
+        $jsonFile = file_get_contents(JsonDAO::$file);
+        $tweets = json_decode($jsonFile, true);
+        $lastTweet = end($tweets['tweets']);
+        return $lastTweet['id'] + 1;
     }
 
     /*

@@ -7,8 +7,7 @@ use View\TemplateEngineInterface;
 use Http\Request;
 use Http\Response;
 
-class App
-{
+class App {
     /**
      * @var array
      */
@@ -63,8 +62,7 @@ class App
      *
      * @return App
      */
-    public function get($pattern, $callable)
-    {
+    public function get($pattern, $callable) {
         $this->registerRoute(Request::GET, $pattern, $callable);
 
         return $this;
@@ -132,8 +130,8 @@ class App
 
         try {
             // http_response_code($this->statusCode);
-            $response = call_user_func_array($route->getCallable(), $arguments);
-            $response = new Response($response, $this->statusCode);
+            $response = call_user_func_array($route->getCallable(), $arguments); // string du contenu html
+            $response = new Response($response, $this->statusCode); // objet reponse avec un content qui contient le string du dessus
             $response->send(); // echo du contenu
         } catch (HttpException $e) {
             throw $e;

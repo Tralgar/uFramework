@@ -46,12 +46,4 @@ class Tweet {
         return '<div><div class="titleTweet">Tweet : ' . $this->getId() . '  | User : ' . $this->getUserId() . '  | Date : ' . $this->getDate()->format("Y-m-d H:i:s") . '<br/>' . $this->getContent() . '</div><br/>';
     }
 
-    /*
-     * Function that return the id of the last tweet + 1 to create a tweet with and auto ID unique
-     */
-    public static function getLastTweetId() {
-        $jsonFile = file_get_contents(JsonFinder::$file);
-        $tweets = json_decode($jsonFile, true);
-        return $tweets['tweets'][count($tweets['tweets'])]['id'] + 1;
-    }
 }

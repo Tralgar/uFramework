@@ -1,0 +1,3 @@
+expliquer pk on a utiliser tweet à la place de status,
+pk la ressource est tweet et pas tweets
+présenter les trucs qu'on a utiliser et pourquoi !
