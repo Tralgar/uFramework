@@ -2,23 +2,22 @@
     $tweets = $parameters['tweets'];
     include_once "header.php";
 ?>
+    <div id="content">
         <div class="titleTweets">
-            Affichage des tweets :
+            Affichage des Tweets
         </div>
-        <br/><br/>
         <div>
             <?php
             foreach($tweets as $tweet) {
-                ?>
-                <form style="float:left;" action="/tweet/<?= $tweet->getId() ?>" method="POST">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <input type="submit" value="Extermination du tweet" />
-                </form>
-                <?php
+                include("deleteForm.php");
                 echo $tweet;
+                if($tweet !== end($tweets)) {
+                    echo "<div class='separation'></div>";
+                }
             }
             ?>
         </div>
+    </div>
 <?php
     include_once "footer.php";
 ?>

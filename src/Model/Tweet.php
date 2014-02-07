@@ -43,7 +43,7 @@ class Tweet {
     }
 
     public function __toString() {
-        return '<div><div class="titleTweet">Tweet : ' . $this->getId() . '  | User : ' . $this->getUserId() . '  | Date : ' . $this->getDate()->format("Y-m-d H:i:s") . '<br/>' . $this->getContent() . '</div><br/>';
+        return '<div class="titleTweet">Tweet : ' . $this->getId() . '  | User : ' . $this->getUserId() . '  | Date : ' . $this->getDate()->format("Y-m-d H:i:s") . '<br/>' . $this->getContent() . '</div>';
     }
 
 }

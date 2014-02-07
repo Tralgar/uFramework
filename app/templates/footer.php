@@ -1,6 +1,6 @@
     </body>
     <footer>
-        <a href="/">Accueil</a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-        <a href="/tweet">Affichages de tous les tweets</a>
+        <a href="/">Création de Tweet</a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+        <a href="/tweet">Afficher tous les Tweets</a>
     </footer>
 </html>
