@@ -2,8 +2,6 @@
 
 namespace Model;
 
-// REMPLACE PAR JSONDAO !!!!!!!!
-
 use DateTime;
 use Exception\HttpException;
 
@@ -67,7 +65,7 @@ class JsonDAO implements FinderInterface {
         throw new HttpException(404, "Le tweet avec l'id demandé n'existe pas !");
     }
 
-    private function getJsonTweets() {
+    private function getJsonTweets() { // On est SOLID, ON ÉVITE LA DUPLICATION DE CODE
         $tweets = json_decode(file_get_contents(self::$file), true);
         if($tweets === false) {
             echo "Erreur lors de la lecture du fichier " . self::$file;

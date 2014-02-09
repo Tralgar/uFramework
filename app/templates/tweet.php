@@ -2,11 +2,12 @@
     $tweet = $parameters['tweet'];
     include_once "header.php";
 ?>
+
     <div id="content">
         <div class="titleTweets">
             Affichage du Tweet :
         </div>
-        <div id="contentTweet">
+        <div>
         <?php
             include("deleteForm.php");
             echo $tweet;
