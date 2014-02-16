@@ -5,7 +5,18 @@
     </head>
     <body>
     <header>
-        <h1 id="title">SWAG OF PONEY powered by Léo & the tribe of Ewoks</h1>
+            <?php
+
+                if(session_status() === PHP_SESSION_ACTIVE && $_SESSION) {
+                    echo "<h1 id='title'>" . $_SESSION['login'] . "</h1>";
+                    echo '<a href="/logout" id="login">Log Out</a>';
+                }
+                else {
+                    echo "<h1 id='title'>Anonymous</h1>";
+                    echo '<a href="/login" id="login">Log In</a>';
+                    echo '<a href="/signin" id="signin">Sign In</a>';
+                }
+            ?>
     </header>
     <a href="/new" id="addTweet">Add Tweet</a>
     <a href="/tweet" id="listTweets">List Tweets</a>

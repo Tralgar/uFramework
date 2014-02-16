@@ -35,7 +35,7 @@
                 <?php
                 include("deleteForm.php");
                 if($tweet !== end($tweets)) {
-                    echo "<div class='separation'></div>";
+                    echo "<br/><div class='separation'></div><br/>";
                 }
             }
             ?>

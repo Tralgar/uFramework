@@ -1,3 +1,18 @@
-expliquer pk on a utiliser tweet à la place de status,
-pk la ressource est tweet et pas tweets
-présenter les trucs qu'on a utiliser et pourquoi !
+Ce qui a été fait :
+    - practical 1 : tout fonctionne
+    - practical 2 : tout fonctionne (autoloader dans dossier save)
+    - practical 3 : tout fonctionne
+    - practical 4 : tout fonctionne (Tests final exécuté à la main en commande)
+    - practical 5 : tout fonctionne (Un test effectué sur une requete sur /tweet pour findAll avec limit/order)
+    - practical 6 : L'authentification fonctionne, l'inscription fonctionne, on ne peut supprimer que nos tweets. Le reste nous avons manqué de temps pour le faire.
+
+Remarques :
+- J'ai utilisé le nom de ressource Tweet car c'est un nom qui définit parfaitement ce qu'il faut faire, manipuler des tweets.
+  Un nom qui me parlait plus que statuse et qui parlera surement plus à l'utilisateur ou au futur developpeur.
+  le nom est au singulier car une ressource est un tweet, j'ai préféré le mettre comme ça car je trouvait sa plus pertinent.
+- Pour selectionner un tweet particuliers, il faut cliquer sur l'id dans la page /tweet.
+- Le nom du client connecté est afficher dans le header au milieu, sinon il est marqué anonymous.
+- Je n'ai pas vraiment compris comment devaient marcher des tests, comment les implémenter et je n'ai pas eu le temps de faire les tests
+  fonctionnels. Il n'y a qu'un test unitaire, ou des petits assert dans le code notamment dans les constructeurs.
+- Avec une ou deux semaines nous aurions pu finir, ainsi qu'un tp en plus car au dernier TP nous n'étions pas rendus aux tests et je me suis rendu compte que c'était beaucoup plus dur que ce que je pensais.
+  Mais je vais essayer de les faire plus tards, quand j'aurai un moment en entreprise car ca a vraiment l'air crucial et j'ai compris qu'ils n'avaient pas qu'une seule utilité mais que pour le maintient et le partage d'une application, c'était indispensable !

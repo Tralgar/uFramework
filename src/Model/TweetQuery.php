@@ -34,8 +34,13 @@ class TweetQuery implements FinderInterface {
         if($limit) {
             $queryString .= " LIMIT " . $limit;
         }
-        $query = $this->connection->prepare($queryString); // exemple avec prepare, on aurait pu DESC mais on inverse apres pour la compatibilité JSON
-        $query->execute();
+
+        $query = $this->connection->executeQuery($queryString); // Exemple d'utlisation d'une prepare query via connection
+
+        if(!$query) {
+            return $queryString;
+        }
+
         $tweets = array();
         foreach($query->fetchAll(PDO::FETCH_ASSOC) as $tweet) {
             array_push($tweets, new Tweet(intval($tweet['id']), intval($tweet['user_id']), $tweet['content'], new DateTime($tweet['date'])));

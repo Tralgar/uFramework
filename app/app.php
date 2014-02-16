@@ -11,6 +11,8 @@ use View\TemplateEngine;
 use Assert\AssertionFailedException;
 use Model\TweetQuery;
 use Model\TweetMapper;
+use Model\User;
+use Model\UserQuery;
 
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -34,14 +36,17 @@ $debug = true;
 $app = new App(new TemplateEngine(__DIR__ . '/templates/'), $debug);
 
 $app->get('/', function (Request $request) use ($app) { // request is not shared. It is always different !
+    session_start();
     return $app->render('index.php');
 });
 
 $app->get('/new', function (Request $request) use ($app) {
+    session_start();
     return $app->render('new.php');
 });
 
 $app->get('/tweet', function (Request $request) use ($app, $serializer, $connection) {
+    session_start();
     // $inMemory = new \Model\InMemoryFinder();
     // $tweets = $inMemory->findAll();
     // $jsonTweets = new JsonDAO();
@@ -61,6 +66,7 @@ $app->get('/tweet', function (Request $request) use ($app, $serializer, $connect
 });
 
 $app->get('/tweet/(\d+)', function (Request $request, $id) use ($app, $serializer, $connection) { // on peut request mais il faut le mettre en premier
+    session_start();
     // $inMemory = new \Model\InMemoryFinder();
     // $tweet = $inMemory->findOneById($id);
     // $jsonTweets = new JsonDAO();
@@ -78,6 +84,7 @@ $app->get('/tweet/(\d+)', function (Request $request, $id) use ($app, $serialize
 });
 
 $app->post('/tweet', function (Request $request) use ($app, $connection) {
+    session_start();
     // Pour le test en curl, on a pas besoin de changer car on prend les parametres de la requete, ca ne change rien que ce soit du json ou pas, c'est géré avant !
     // $jsonTweets = new JsonDAO();
     $tweetQuery = new TweetQuery($connection);
@@ -106,6 +113,7 @@ $app->post('/tweet', function (Request $request) use ($app, $connection) {
 });
 
 $app->delete('/tweet/(\d+)', function (Request $request, $id) use ($app, $connection) {
+    session_start();
     // $jsonTweets = new JsonDAO();
     // $jsonTweets->deleteTweet($id);
     $tweetQuery = new TweetQuery($connection);
@@ -117,6 +125,48 @@ $app->delete('/tweet/(\d+)', function (Request $request, $id) use ($app, $connec
     $mapper = new TweetMapper($connection);
     $mapper->remove($tweet);
 
+    $app->redirect('/tweet');
+});
+
+$app->get('/login', function (Request $request) use ($app) {
+    session_start();
+    if(session_status() === PHP_SESSION_ACTIVE && $_SESSION) {
+        $app->redirect('/tweet');
+    }
+    return $app->render('login.php');
+});
+
+$app->post('/login', function (Request $request) use ($app, $connection) {
+    $userQuery = new UserQuery($connection);
+    $pseudo = $request->getParameter('pseudo');
+    $password = $request->getParameter('password');
+    if($userQuery->connect($pseudo, $password))
+        $app->redirect('/tweet');
+    $app->redirect('/login');
+});
+
+$app->post('/signin', function (Request $request) use ($app, $connection) {
+    $userQuery = new UserQuery($connection);
+    $pseudo = $request->getParameter('pseudo');
+    $password = $request->getParameter('password');
+    $name = $request->getParameter('name');
+    if($pseudo && $password && $name) {
+        $userQuery->save(new User($userQuery->getLastUserId(), $pseudo, $password, $name));
+    }
+    $app->redirect('/tweet');
+});
+
+$app->get('/signin', function (Request $request) use ($app) {
+    session_start();
+    if(session_status() === PHP_SESSION_ACTIVE && $_SESSION) {
+        $app->redirect('/tweet');
+    }
+    return $app->render('signin.php');
+});
+
+$app->get('/logout', function (Request $request) use ($app) {
+    session_start();
+    session_destroy();
     $app->redirect('/tweet');
 });
 
