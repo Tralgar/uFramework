@@ -37,20 +37,27 @@ $app->get('/', function (Request $request) use ($app) { // request is not shared
     return $app->render('index.php');
 });
 
+$app->get('/new', function (Request $request) use ($app) {
+    return $app->render('new.php');
+});
+
 $app->get('/tweet', function (Request $request) use ($app, $serializer, $connection) {
     // $inMemory = new \Model\InMemoryFinder();
     // $tweets = $inMemory->findAll();
     // $jsonTweets = new JsonDAO();
     // $tweets = $jsonTweets->findAll();
+    $limit = $request->getParameter('limit');
+    $orderBy = $request->getParameter('orderBy');
+    $direction = $request->getParameter('direction');
     $tweetQuery = new TweetQuery($connection);
-    $tweets = $tweetQuery->findAll();
+    $tweets = $tweetQuery->findAll($limit, $orderBy, $direction);
     $format = $request->guessBestFormat();
     if($format === 'json') {
         $response = new Response($serializer->serialize($tweets, $format), 200, array('Content-Type' => 'application/json'));
         $response->send();
         return;
     }
-    return $app->render('tweets.php', array('tweets' => array_reverse($tweets, true))); // array_reverse pour affichage du dernier tweet en premier !
+    return $app->render('tweets.php', array('tweets' => !$direction ? array_reverse($tweets, true) : $tweets, true)); // array_reverse pour affichage du dernier tweet en premier si il n'y pas de direction spécifié !
 });
 
 $app->get('/tweet/(\d+)', function (Request $request, $id) use ($app, $serializer, $connection) { // on peut request mais il faut le mettre en premier

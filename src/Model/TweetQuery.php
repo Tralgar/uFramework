@@ -2,8 +2,12 @@
 
 namespace Model;
 
+// i called it TweetQuery because it's not only a finder, and propel name it like that as i saw =D
+
+use PDO;
 use DateTime;
 use Symfony\Component\Serializer\Exception\Exception;
+use ReflectionClass;
 
 class TweetQuery implements FinderInterface {
 
@@ -13,8 +17,24 @@ class TweetQuery implements FinderInterface {
         $this->connection = $connection;
     }
 
-    public function findAll() {
-        $query = $this->connection->prepare('SELECT * FROM Tweet'); // exemple avec prepare, on aurait pu DESC mais on inverse apres pour la compatibilité JSON
+    public function findAll($limit = null, $orderBy = null, $direction = null) {
+        $queryString = "SELECT * FROM Tweet";
+        if($orderBy) {
+            $reflexion = new ReflectionClass('Model\Tweet');
+            foreach($reflexion->getProperties() as $property) {
+                if($property->getName() === $orderBy) {
+                    $queryString .= " ORDER BY " . $orderBy;
+                    if($direction && ($direction === "ASC" || $direction === "DESC")) {
+                        $queryString .= " " . $direction;
+                    }
+                    break;
+                }
+            }
+        }
+        if($limit) {
+            $queryString .= " LIMIT " . $limit;
+        }
+        $query = $this->connection->prepare($queryString); // exemple avec prepare, on aurait pu DESC mais on inverse apres pour la compatibilité JSON
         $query->execute();
         $tweets = array();
         foreach($query->fetchAll(PDO::FETCH_ASSOC) as $tweet) {
@@ -39,12 +59,16 @@ class TweetQuery implements FinderInterface {
 
             if(($id != null) & ($user_id != null) & ($content != null) & ($date != null)) {
                 try {
-                    var_dump($date);
-                    $this->connection->exec('INSERT INTO Tweet VALUES (' . $id . ', ' . $user_id . ', "' . $content . '", "' . $date->date . '")'); // id auto généré mais pour essayer, je le gère moi même !
+                    $query = $this->connection->prepare('INSERT INTO Tweet VALUES (:id, :user_id, :content, :date)'); // id auto généré mais pour essayer, je le gère moi même !
+                    $query->bindValue(":id", $id, PDO::PARAM_INT);
+                    $query->bindValue(":user_id", $user_id, PDO::PARAM_INT);
+                    $query->bindValue(":content", $content, PDO::PARAM_STR);
+                    $query->bindValue(":date", $date->format("Y-m-d H:i:s"));
+                    $query->execute();
                     return;
                 }
                 catch(Exception $e){
-                    $e->getMessage();
+                    echo $e->getMessage();
                     exit;
                 }
             }
@@ -56,7 +80,9 @@ class TweetQuery implements FinderInterface {
 
     public function remove($id) {
         try {
-            $this->connection->exec('DELETE FROM Tweet WHERE id = ' . $id );
+            $query = $this->connection->prepare('DELETE FROM Tweet WHERE id = :id');
+            $query->bindValue(":id", $id, PDO::PARAM_INT); // meme si ca sert a rien ! car c'est typehinter et vérifié avant
+            $query->execute();
         }
         catch(Exception $e){
             $e->getMessage();

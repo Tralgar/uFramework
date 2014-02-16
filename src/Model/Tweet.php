@@ -47,6 +47,10 @@ class Tweet {
 
     public function setUserId($user_id) {
         Assertion::integer($user_id, "The user_id of the tweet must be an int.");
+        if($user_id <= 0) {
+            echo "<script>alert('Le user ID est invalide, il doit être positif')</script>";
+            exit;
+        }
         $this->user_id = $user_id;
     }
 

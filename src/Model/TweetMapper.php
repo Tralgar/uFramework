@@ -2,6 +2,8 @@
 
 namespace Model;
 
+use PDO;
+
 class TweetMapper {
 
     private $connection;
@@ -18,12 +20,16 @@ class TweetMapper {
 
         if(($id != null) & ($user_id != null) & ($content != null) & ($date != null)) {
             try {
-                var_dump($date);
-                $this->connection->exec('INSERT INTO Tweet VALUES (' . $id . ', ' . $user_id . ', "' . $content . '", "' . $date->date . '")'); // id auto généré mais pour essayer, je le gère moi même !
+                $query = $this->connection->prepare('INSERT INTO Tweet VALUES (:id, :user_id, :content, :date)');
+                $query->bindValue(":id", $id, PDO::PARAM_INT);
+                $query->bindValue(":user_id", $user_id, PDO::PARAM_INT);
+                $query->bindValue(":content", $content, PDO::PARAM_STR);
+                $query->bindValue(":date", $date->format("Y-m-d H:i:s"));
+                $query->execute();
                 return;
             }
             catch(Exception $e){
-                $e->getMessage();
+                echo $e->getMessage();
                 exit;
             }
         }
@@ -34,7 +40,9 @@ class TweetMapper {
 
     public function remove(Tweet $tweet) {
         try {
-            $this->connection->exec('DELETE FROM Tweet WHERE id = ' . $tweet->getId());
+            $query = $this->connection->prepare('DELETE FROM Tweet WHERE id = :id');
+            $query->bindValue(":id", $tweet->getId(), PDO::PARAM_INT); // meme si ca sert a rien !
+            $query->execute();
         }
         catch(Exception $e){
             $e->getMessage();
