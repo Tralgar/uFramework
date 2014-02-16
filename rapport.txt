@@ -15,4 +15,5 @@ Remarques :
 - Je n'ai pas vraiment compris comment devaient marcher des tests, comment les implémenter et je n'ai pas eu le temps de faire les tests
   fonctionnels. Il n'y a qu'un test unitaire, ou des petits assert dans le code notamment dans les constructeurs.
 - Avec une ou deux semaines nous aurions pu finir, ainsi qu'un tp en plus car au dernier TP nous n'étions pas rendus aux tests et je me suis rendu compte que c'était beaucoup plus dur que ce que je pensais.
-  Mais je vais essayer de les faire plus tards, quand j'aurai un moment en entreprise car ca a vraiment l'air crucial et j'ai compris qu'ils n'avaient pas qu'une seule utilité mais que pour le maintient et le partage d'une application, c'était indispensable !
+  Mais je vais essayer de les faire plus tards, quand j'aurai un moment en entreprise car ca a vraiment l'air crucial et j'ai compris qu'ils n'avaient pas qu'une seule utilité mais que pour le maintient et le partage d'une application, c'était indispensable "Read the test, not the doc" =D !
+- Merci à vous de nous avoir aidé pendant le projet, réponses rapides, projet peu long, un peu dur mais c'était grave cool !
